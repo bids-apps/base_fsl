@@ -15,7 +15,7 @@ dependencies:
 test:
   override:
     # print version
-    - pass
+    - echo "pass"
 
 deployment:
   hub:
