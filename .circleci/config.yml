@@ -21,14 +21,12 @@ jobs:
             - docker/image.tar
 
   deploy:
-    #docker:
-      #- image: circleci/buildpack-deps:stretch
     machine:
       image: ubuntu-2204:2022.10.2
     steps:
       - attach_workspace:
           at: /tmp/workspace
-      #- setup_remote_docker
+      - setup_remote_docker
       - run: docker load -i /tmp/workspace/docker/image.tar
       - run:
           command: |
