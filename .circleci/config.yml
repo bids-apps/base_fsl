@@ -1,0 +1,58 @@
+version: 2.1
+jobs:
+  build:
+    machine:
+      # https://circleci.com/developer/machine/image/ubuntu-2204     
+      image: ubuntu-2204:2022.10.2
+    steps:
+      - checkout
+      - run:
+          name: build docker image
+          command: |
+            if [[ -e ~/docker/image.tar ]]; then
+              docker load -i ~/docker/image.tar;
+            fi
+            docker build -t bids/${CIRCLE_PROJECT_REPONAME}:latest .
+            mkdir -p ~/docker
+            docker save "bids/${CIRCLE_PROJECT_REPONAME}:latest" > ~/docker/image.tar
+      - persist_to_workspace:
+          root: /home/circleci
+          paths:
+            - docker/image.tar
+
+  deploy:
+    #docker:
+      #- image: circleci/buildpack-deps:stretch
+    machine:
+      image: ubuntu-2204:2022.10.2
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      #- setup_remote_docker
+      - run: docker load -i /tmp/workspace/docker/image.tar
+      - run:
+          command: |
+            if [[ -n "$DOCKER_PASS" ]]; then
+              echo "${DOCKER_PASS}" | docker login -u ${DOCKER_USER} --password-stdin && \
+              docker push bids/${CIRCLE_PROJECT_REPONAME}:latest
+              if [[ -n "${CIRCLE_TAG}" ]]; then
+                docker tag bids/${CIRCLE_PROJECT_REPONAME} bids/${CIRCLE_PROJECT_REPONAME}:$CIRCLE_TAG
+                docker push bids/${CIRCLE_PROJECT_REPONAME}:$CIRCLE_TAG;
+              fi
+            fi
+
+workflows:
+  build_deploy:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /.*/
+      - deploy:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /.*/
+
+# VS Code Extension Version: 1.5.1
