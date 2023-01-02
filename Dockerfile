@@ -8,7 +8,7 @@
 # 
 #     https://github.com/ReproNim/neurodocker
 
-FROM debian:buster-slim
+FROM ubuntu:jammy-20221130
 
 USER root
 
@@ -100,7 +100,7 @@ RUN echo '{ \
     \n  "instructions": [ \
     \n    [ \
     \n      "base", \
-    \n      "debian:buster-slim" \
+    \n      "ubuntu:jammy-20221130" \
     \n    ], \
     \n    [ \
     \n      "install", \
