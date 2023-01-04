@@ -38,45 +38,7 @@ RUN apt-get update -qq \
     && rm -rf /var/lib/apt/lists/* \
     && echo "Downloading FSL ..." \
     && mkdir -p /opt/fsl-6.0.3 \
-    && curl -fL https://fsl.fmrib.ox.ac.uk/fsldownloads/fsl-6.0.3-centos6_64.tar.gz \
-    | tar -xz -C /opt/fsl-6.0.3 --strip-components 1 \
-    && echo "Installing FSL conda environment ..." \
-    && bash /opt/fsl-6.0.3/etc/fslconf/fslpython_install.sh -f /opt/fsl-6.0.3
-
-# Save specification to JSON.
-RUN printf '{ \
-  "pkg_manager": "apt", \
-  "existing_users": [ \
-    "root" \
-  ], \
-  "instructions": [ \
-    { \
-      "name": "from_", \
-      "kwds": { \
-        "base_image": "bids/base_validator" \
-      } \
-    }, \
-    { \
-      "name": "env", \
-      "kwds": { \
-        "FSLDIR": "/opt/fsl-6.0.3", \
-        "PATH": "/opt/fsl-6.0.3/bin:$PATH", \
-        "FSLOUTPUTTYPE": "NIFTI_GZ", \
-        "FSLMULTIFILEQUIT": "TRUE", \
-        "FSLTCLSH": "/opt/fsl-6.0.3/bin/fsltclsh", \
-        "FSLWISH": "/opt/fsl-6.0.3/bin/fslwish", \
-        "FSLLOCKDIR": "", \
-        "FSLMACHINELIST": "", \
-        "FSLREMOTECALL": "", \
-        "FSLGECUDAQ": "cuda.q" \
-      } \
-    }, \
-    { \
-      "name": "run", \
-      "kwds": { \
-        "command": "apt-get update -qq\\napt-get install -y -q --no-install-recommends \\\\\\n    bc \\\\\\n    ca-certificates \\\\\\n    curl \\\\\\n    dc \\\\\\n    file \\\\\\n    libfontconfig1 \\\\\\n    libfreetype6 \\\\\\n    libgl1-mesa-dev \\\\\\n    libgl1-mesa-dri \\\\\\n    libglu1-mesa-dev \\\\\\n    libgomp1 \\\\\\n    libice6 \\\\\\n    libopenblas-base \\\\\\n    libxcursor1 \\\\\\n    libxft2 \\\\\\n    libxinerama1 \\\\\\n    libxrandr2 \\\\\\n    libxrender1 \\\\\\n    libxt6 \\\\\\n    nano \\\\\\n    sudo \\\\\\n    wget\\nrm -rf /var/lib/apt/lists/*\\necho \\"Downloading FSL ...\\"\\nmkdir -p /opt/fsl-6.0.3\\ncurl -fL https://fsl.fmrib.ox.ac.uk/fsldownloads/fsl-6.0.3-centos6_64.tar.gz \\\\\\n| tar -xz -C /opt/fsl-6.0.3 --strip-components 1 \\necho \\"Installing FSL conda environment ...\\"\\nbash /opt/fsl-6.0.3/etc/fslconf/fslpython_install.sh -f /opt/fsl-6.0.3" \
-      } \
-    } \
-  ] \
-}' > /.reproenv.json
-# End saving to specification to JSON.
+    && wget -q http://fsl.fmrib.ox.ac.uk/fsldownloads/fslinstaller.py \
+    && chmod 775 fslinstaller.py \
+    && python3 /fslinstaller.py -d /opt/fsl-6.0.3 -V 6.0.3 && \
+    && rm -f /fslinstaller.py
