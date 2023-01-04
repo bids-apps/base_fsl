@@ -37,7 +37,6 @@ RUN apt-get update -qq \
            wget \
     && rm -rf /var/lib/apt/lists/* \
     && echo "Downloading FSL ..." \
-    && mkdir -p /opt/fsl-6.0.6 \
     && wget -q http://fsl.fmrib.ox.ac.uk/fsldownloads/fslinstaller.py \
     && chmod 775 fslinstaller.py \
     && python3 /fslinstaller.py -d /opt/fsl-6.0.6 -V 6.0.6 \
