@@ -40,5 +40,5 @@ RUN apt-get update -qq \
     && mkdir -p /opt/fsl-6.0.3 \
     && wget -q http://fsl.fmrib.ox.ac.uk/fsldownloads/fslinstaller.py \
     && chmod 775 fslinstaller.py \
-    && python3 /fslinstaller.py -d /opt/fsl-6.0.3 -V 6.0.3 && \
+    && python3 /fslinstaller.py -d /opt/fsl-6.0.3 -V 6.0.3 \
     && rm -f /fslinstaller.py
