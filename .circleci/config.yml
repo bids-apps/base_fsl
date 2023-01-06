@@ -6,42 +6,40 @@ jobs:
       # https://circleci.com/developer/machine/image/ubuntu-2204
       image: ubuntu-2204:2022.10.2
     steps:
-    - checkout
-    - run:
-        name: build docker image
-        command: |
-          wget https://raw.githubusercontent.com/bids-apps/maintenance-tools/main/circleci/build_docker.sh
-          bash build_docker.sh          
-    - persist_to_workspace:
-        root: /home/circleci
-        paths:
-        - docker/image.tar
+      - checkout
+      - run:
+          name: build docker image
+          command: |
+            wget https://raw.githubusercontent.com/bids-apps/maintenance-tools/main/circleci/build_docker.sh
+            bash build_docker.sh
+      - persist_to_workspace:
+          root: /home/circleci
+          paths:
+            - docker/image.tar
 
   deploy:
     machine:
       image: ubuntu-2204:2022.10.2
     steps:
-    - attach_workspace:
-        at: /tmp/workspace
-    - run: docker load -i /tmp/workspace/docker/image.tar
-    - run:
-        name: push to dockerhub     
-        command: |
-          wget https://raw.githubusercontent.com/bids-apps/maintenance-tools/main/circleci/push_docker.sh
-          bash push_docker.sh  
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: docker load -i /tmp/workspace/docker/image.tar
+      - run:
+          name: push to dockerhub
+          command: |
+            wget https://raw.githubusercontent.com/bids-apps/maintenance-tools/main/circleci/push_docker.sh
+            bash push_docker.sh
 
 workflows:
   build_deploy:
     jobs:
-    - build:
-        filters:
-          branches:
-            only: master
-    - deploy:
-        requires:
-        - build
-        filters:
-          branches:
-            only: master
-
-# VS Code Extension Version: 1.5.1
+      - build:
+          filters:
+            branches:
+              only: master
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
