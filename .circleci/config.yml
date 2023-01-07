@@ -38,6 +38,8 @@ workflows:
           branches:
             only: master
     - deploy:
+        context:
+        - dockerhub
         requires:
         - build
         filters:
