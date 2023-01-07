@@ -41,4 +41,4 @@ RUN apt-get update -qq \
     && chmod 775 fslinstaller.py \
     && python3 /fslinstaller.py -d /opt/fsl-6.0.6 -V 6.0.6 \
     && rm -f /fslinstaller.py \
-    && which immv || ( echo "FSLPython not properly configured; re-running" && rm -rf /opt/fsl/fslpython && /opt/fsl/etc/fslconf/fslpython_install.sh -f /opt/fsl || ( cat /tmp/fslpython*/fslpython_miniconda_installer.log && exit 1 ) )    
+    && which immv || ( echo "FSLPython not properly configured; re-running" && rm -rf /opt/fsl/fslpython && /opt/fsl/etc/fslconf/fslpython_install.sh -f /opt/fsl || ( cat /tmp/fslpython*/fslpython_miniconda_installer.log && exit 1 ) )
