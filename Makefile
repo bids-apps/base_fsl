@@ -5,4 +5,5 @@ Dockerfile:
 		generate docker \
 			--base-image bids/base_validator \
 			--pkg-manager apt \
-			--fsl method=binaries version=6.0.3 > Dockerfile
+			--yes \
+			--fsl method=binaries version=6.0.0 > Dockerfile
