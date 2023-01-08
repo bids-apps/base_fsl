@@ -38,7 +38,7 @@ workflows:
           branches:
             only: master
           tags:
-            only: /.*/             
+            only: /.*/
     - deploy:
         context:
         - dockerhub
@@ -48,5 +48,4 @@ workflows:
           branches:
             only: master
           tags:
-            only: /.*/            
-
+            only: /.*/
