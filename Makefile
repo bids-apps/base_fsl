@@ -6,4 +6,4 @@ Dockerfile:
 			--base-image bids/base_validator \
 			--pkg-manager apt \
 			--yes \
-			--fsl method=binaries version=6.0.3 > Dockerfile
+			--fsl method=binaries version=6.0.1 > Dockerfile
