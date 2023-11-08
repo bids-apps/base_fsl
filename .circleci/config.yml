@@ -35,8 +35,6 @@ workflows:
     jobs:
     - build:
         filters:
-          branches:
-            only: master
           tags:
             only: /.*/
     - deploy:
@@ -45,7 +43,5 @@ workflows:
         requires:
         - build
         filters:
-          branches:
-            only: master
           tags:
             only: /.*/
